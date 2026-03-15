@@ -1,12 +1,10 @@
-export function rollDice(){
+const diceBtn = document.getElementById("rollDice");
+const diceResult = document.getElementById("diceResult");
 
-let d1 = Math.floor(Math.random()*6)+1
-let d2 = Math.floor(Math.random()*6)+1
+diceBtn.addEventListener("click", () => {
 
-return {
-dice1:d1,
-dice2:d2,
-total:d1+d2
-}
+    let dice = Math.floor(Math.random() * 6) + 1;
 
-}
+    diceResult.innerText = "Dice: " + dice;
+
+});
