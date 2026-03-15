@@ -4,6 +4,8 @@ constructor(){
 
 this.position = 0;
 
+this.money = 1500;
+
 this.token = document.createElement("div");
 
 this.token.classList.add("player");
