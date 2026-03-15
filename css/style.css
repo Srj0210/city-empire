@@ -40,3 +40,28 @@ font-size:11px;
 font-weight:bold;
 
 }
+
+.player{
+
+width:20px;
+height:20px;
+
+background:red;
+
+border-radius:50%;
+
+margin:auto;
+
+}
+
+button{
+
+margin-top:20px;
+
+padding:10px 20px;
+
+font-size:16px;
+
+cursor:pointer;
+
+}
