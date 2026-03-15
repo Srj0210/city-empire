@@ -4,18 +4,22 @@ import { GameEngine } from "./engine.js";
 
 window.onload = () => {
 
-  createBoard();
+createBoard();
 
-  const board = document.getElementById("board");
+const board = document.getElementById("board");
 
-  const player = new Player();
+const player = new Player();
 
-  player.spawn(board);
+player.spawn(board);
 
-  const engine = new GameEngine(player, board);
+const engine = new GameEngine(player, board);
 
-  document.addEventListener("click", () => {
-    engine.roll();
-  });
+const btn = document.getElementById("rollDice");
+
+btn.onclick = () => {
+
+engine.roll();
+
+};
 
 };
