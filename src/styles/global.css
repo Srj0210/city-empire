@@ -1,0 +1,63 @@
+/* src/styles/global.css */
+:root {
+  --primary-yellow: #fdd835;
+  --secondary-orange: #f57f17;
+  --success-green: #43a047;
+  --danger-red: #e53935;
+  --ai-blue: #64c8ff;
+  --dark-bg: #0d1f14;
+  --card-bg: rgba(255, 255, 255, 0.07);
+  --br: 16px;
+  --shadow-3d: 0 6px 0 rgba(0, 0, 0, 0.2);
+  --shadow-3d-active: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.glass {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--br);
+}
+
+.btn-3d {
+  position: relative;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.1s;
+  box-shadow: var(--shadow-3d);
+}
+
+.btn-3d:active {
+  transform: translateY(4px);
+  box-shadow: var(--shadow-3d-active);
+}
+
+.btn-yellow {
+  background: linear-gradient(135deg, var(--primary-yellow), var(--secondary-orange));
+  color: #1b2820;
+}
+
+.btn-green {
+  background: linear-gradient(135deg, #66bb6a, #43a047);
+  color: white;
+}
+
+.btn-red {
+  background: linear-gradient(135deg, #ef5350, #e53935);
+  color: white;
+}

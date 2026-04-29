@@ -17,53 +17,68 @@ function BoardTile({ tile, G, isActive }) {
   const bandStyle = {};
   if (bandColor) {
     const sides = ["borderTop", "borderRight", "borderBottom", "borderLeft"];
-    if (bandSide >= 0) bandStyle[sides[bandSide]] = `7px solid ${bandColor}`;
+    if (bandSide >= 0) bandStyle[sides[bandSide]] = `8px solid ${bandColor}`;
   }
 
   return (
     <div style={{
       gridColumn: col, gridRow: row,
-      background: isActive ? "#FFFDE7" : isMortgaged ? "#f5e6e6" : isCorner ? "#F0F4F8" : "white",
-      border: "1px solid #9E9E9E",
+      background: isActive ? "#FFFDE7" : isMortgaged ? "#f5e6e6" : "white",
+      border: "1.5px solid #ddd",
+      borderRadius: isCorner ? "12px" : "8px",
+      margin: "1px",
       display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
       position: "relative", overflow: "hidden", boxSizing: "border-box",
       ...bandStyle,
-      outline: isActive ? "2px solid #FFC107" : "none",
+      outline: isActive ? "3px solid var(--primary-yellow)" : "none",
+      boxShadow: isActive ? "0 0 20px var(--primary-yellow)" : "0 2px 4px rgba(0,0,0,0.05)",
+      zIndex: isActive ? 10 : 1,
+      transition: "all 0.2s"
     }}>
-      {isCorner && <div style={{ fontSize: 20 }}>{CORNER_ICONS[tile.type] || ""}</div>}
-      {!isCorner && SPECIAL_ICONS[tile.type] && <div style={{ fontSize: 11 }}>{SPECIAL_ICONS[tile.type]}</div>}
+      {isCorner && <div style={{ fontSize: 24, animation: "bounce 3s infinite" }}>{CORNER_ICONS[tile.type] || ""}</div>}
+      {!isCorner && SPECIAL_ICONS[tile.type] && <div style={{ fontSize: 14, marginBottom: 2 }}>{SPECIAL_ICONS[tile.type]}</div>}
       <div style={{
-        fontSize: tile.name.length > 9 ? 5.5 : tile.name.length > 6 ? 6.5 : 7.5,
-        fontWeight: "700", textAlign: "center", lineHeight: 1.1,
-        color: isMortgaged ? "#999" : "#1a1a1a", padding: "0 2px",
-        fontFamily: "'Georgia',serif", maxWidth: "100%",
+        fontSize: tile.name.length > 9 ? 6 : tile.name.length > 6 ? 7 : 8.5,
+        fontWeight: "900", textAlign: "center", lineHeight: 1.1,
+        color: isMortgaged ? "#999" : "#1a1a1a", padding: "0 4px",
+        fontFamily: "'Georgia', serif", maxWidth: "100%",
         textDecoration: isMortgaged ? "line-through" : "none",
+        textTransform: "uppercase"
       }}>
-        {isCorner ? tile.name.toUpperCase() : tile.name}
+        {tile.name}
       </div>
-      {tile.price  && !isCorner && <div style={{ fontSize: 6, color: "#555",   fontWeight: 600 }}>₹{tile.price}</div>}
-      {tile.amount && !isCorner && <div style={{ fontSize: 6, color: "#C62828", fontWeight: 600 }}>₹{tile.amount}</div>}
+      {tile.price  && !isCorner && <div style={{ fontSize: 7, color: "#2E7D32", fontWeight: 900, marginTop: 2 }}>₹{tile.price}</div>}
+      {tile.amount && !isCorner && <div style={{ fontSize: 7, color: "#C62828", fontWeight: 900, marginTop: 2 }}>₹{tile.amount}</div>}
+      
       {ownerId !== undefined && (
         <div style={{
-          position: "absolute", top: 2, right: 2, width: 6, height: 6, borderRadius: "50%",
-          background: G.players[ownerId]?.color || "gray", border: "1px solid white",
+          position: "absolute", top: 4, right: 4, width: 8, height: 8, borderRadius: "50%",
+          background: G.players[ownerId]?.color || "gray", border: "2px solid white",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
           opacity: isMortgaged ? 0.4 : 1,
         }} />
       )}
       {houses > 0 && (
-        <div style={{ position: "absolute", bottom: 2, left: 2, fontSize: 7 }}>
-          {houses === 5 ? "🏨" : "🏠".repeat(houses)}
+        <div style={{ position: "absolute", bottom: 4, left: 4, display: "flex", gap: 1 }}>
+          {houses === 5 ? (
+            <span style={{ fontSize: 10 }}>🏨</span>
+          ) : (
+            Array.from({ length: houses }).map((_, i) => (
+              <span key={i} style={{ fontSize: 8 }}>🏠</span>
+            ))
+          )}
         </div>
       )}
       {playersHere.length > 0 && (
         <div style={{
-          position: "absolute", bottom: isCorner ? 8 : 3,
-          display: "flex", gap: 2, zIndex: 5, flexWrap: "wrap", justifyContent: "center",
+          position: "absolute", bottom: isCorner ? 10 : 4,
+          display: "flex", gap: 3, zIndex: 5, flexWrap: "wrap", justifyContent: "center",
         }}>
           {playersHere.map(p => (
             <div key={p.id} style={{
-              width: 10, height: 10, borderRadius: "50%", background: p.color,
-              border: "1.5px solid white", boxShadow: "0 1px 3px rgba(0,0,0,0.5)",
+              width: 14, height: 14, borderRadius: "50%", background: p.color,
+              border: "2px solid white", boxShadow: "0 2px 6px rgba(0,0,0,0.4)",
+              animation: "bounce 0.5s ease-out"
             }} />
           ))}
         </div>
@@ -79,32 +94,29 @@ export default function Board({ G, highlightTile }) {
   return (
     <div style={{
       display: "grid",
-      gridTemplateColumns: "80px repeat(9,50px) 80px",
-      gridTemplateRows: "80px repeat(9,50px) 80px",
-      width: 610, height: 610, flexShrink: 0,
-      border: "3px solid #2E7D32", background: "#2E7D32",
-      boxShadow: "0 8px 40px rgba(0,0,0,0.6)", borderRadius: 4,
+      gridTemplateColumns: "90px repeat(9,55px) 90px",
+      gridTemplateRows: "90px repeat(9,55px) 90px",
+      width: 675, height: 675, flexShrink: 0,
+      border: "8px solid #1b5e20", background: "#2E7D32",
+      boxShadow: "0 20px 60px rgba(0,0,0,0.5)", borderRadius: 20,
+      padding: "5px",
     }}>
       <div style={{
         gridColumn: "2/11", gridRow: "2/11",
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-        background: "linear-gradient(135deg,#1B5E20,#2E7D32,#1B5E20)", userSelect: "none",
+        background: "radial-gradient(circle, #2e7d32 0%, #1b5e20 100%)", userSelect: "none",
+        borderRadius: "10px", margin: "5px"
       }}>
-        <div style={{ fontSize: 40, marginBottom: 4 }}>🏙️</div>
+        <div style={{ fontSize: 60, marginBottom: 10, animation: "bounce 4s infinite" }}>🏙️</div>
         <div style={{
-          fontSize: 24, fontWeight: 900, color: "#FDD835", letterSpacing: 4,
-          fontFamily: "'Georgia',serif", textShadow: "2px 2px 8px rgba(0,0,0,0.7)",
+          fontSize: 32, fontWeight: 900, color: "var(--primary-yellow)", letterSpacing: 6,
+          fontFamily: "'Georgia', serif", textShadow: "3px 3px 0 rgba(0,0,0,0.3)",
         }}>CITY</div>
         <div style={{
-          fontSize: 24, fontWeight: 900, color: "#FDD835", letterSpacing: 4,
-          fontFamily: "'Georgia',serif", textShadow: "2px 2px 8px rgba(0,0,0,0.7)",
+          fontSize: 32, fontWeight: 900, color: "var(--primary-yellow)", letterSpacing: 6,
+          fontFamily: "'Georgia', serif", textShadow: "3px 3px 0 rgba(0,0,0,0.3)",
         }}>EMPIRE</div>
-        <div style={{ fontSize: 9, color: "rgba(255,255,255,0.5)", letterSpacing: 2, marginTop: 4 }}>INDIA EDITION</div>
-        <div style={{ marginTop: 12, display: "flex", flexWrap: "wrap", gap: 3, justifyContent: "center", maxWidth: 220 }}>
-          {Object.entries(GROUP_COLORS).map(([g, c]) => (
-            <div key={g} style={{ width: 16, height: 16, borderRadius: 3, background: c, border: "1px solid rgba(255,255,255,0.3)" }} />
-          ))}
-        </div>
+        <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", letterSpacing: 3, marginTop: 8, fontWeight: 900 }}>INDIA EDITION PRO</div>
       </div>
       {TILES.map(tile => (
         <BoardTile key={tile.id} tile={tile} G={G} isActive={highlightTile === tile.id} />
