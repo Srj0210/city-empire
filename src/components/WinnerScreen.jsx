@@ -29,14 +29,19 @@ export default function WinnerScreen({ G, onPlayAgain }) {
       <p style={{ margin: "0 0 6px", fontSize: 15, fontWeight: 700, opacity: 0.8 }}>
         {G.winner?.isAI ? "The AI dominated the board!" : "A human champion prevails! 🙌"}
       </p>
-      {G.winner && (
+      {G.winner && G.owned && (
         <p style={{ margin: "0 0 16px", fontSize: 13, opacity: 0.75 }}>
-          Cash: ₹{G.winner.money.toLocaleString()} &nbsp;|&nbsp;
-          Net worth: ₹{calcNetWorth(G, G.winner.id).toLocaleString()}
+          Cash: ₹{G.winner.money?.toLocaleString()} &nbsp;|&nbsp;
+          Net worth: ₹{calcNetWorth(G, G.winner.id)?.toLocaleString()}
+        </p>
+      )}
+      {G.winner && !G.owned && (
+        <p style={{ margin: "0 0 16px", fontSize: 13, opacity: 0.75 }}>
+          Final Position: {G.winner.pos} (Victory!)
         </p>
       )}
 
-      {/* Bankrupt players */}
+      {/* Bankrupt players (City Empire only) */}
       {G.players.filter(p => p.bankrupt).length > 0 && (
         <div style={{
           marginBottom: 16, padding: "8px 12px", borderRadius: 10,
